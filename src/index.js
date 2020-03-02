@@ -1,5 +1,5 @@
-import './style.css'
 import * as THREE from 'three';
+import './style.css';
 
 let camera, scene, renderer;
 let geometry, material, mesh;
