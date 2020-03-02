@@ -58,15 +58,9 @@ function init() {
         for (let k = 0; k < 3; k++) {
             for (let j = 0; j < 3; j++) {
                 group.add(new Cubiks(0x00228B22, [k * position, j * position, position * l]).cube)
-
             }
         }
-
     }
-
-
-
-
 
     scene.add(group);
 
