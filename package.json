@@ -29,6 +29,8 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "dat.gui": "^0.7.6",
     "eslint-config-airbnb": "^18.0.1",
     "three": "^0.113.2"
   }
