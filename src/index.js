@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import './style.css';
-
+import OrbitControls from 'three-orbitcontrols';
 import * as dat from 'dat.gui';
 
 
@@ -49,7 +49,7 @@ class Cubiks {
 function init() {
     const position = 0.103;
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
-
+    camera.position.z = 1
     group = new THREE.Group();
     scene = new THREE.Scene();
 
@@ -57,7 +57,21 @@ function init() {
     for (let l = 0; l < 3; l++) {
         for (let k = 0; k < 3; k++) {
             for (let j = 0; j < 3; j++) {
-                group.add(new Cubiks(0x00228B22, [k * position, j * position, position * l]).cube)
+                let lm, km, jm;
+                km = k
+                lm = l
+                jm = j
+                if (k / 2 == 1) {
+                    km = -1
+                }
+                if (l / 2 == 1) {
+                    lm = -1
+                }
+                if (j / 2 == 1) {
+                    jm = -1
+                }
+
+                group.add(new Cubiks(0x00228B22, [km * position, jm * position, position * lm]).cube)
             }
         }
     }
@@ -65,6 +79,9 @@ function init() {
     scene.add(group);
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
+    const controls = new OrbitControls(camera, renderer.domElement)
+
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
@@ -79,20 +96,10 @@ const gui = new dat.GUI();
 
 
 var cubic = {
-    rotationX: 120,
-    rotationY: 120,
-    cameraZ: 1,
-    cameraX: 0.2,
-    cameraY: 0.2,
     rotationX: 0,
     rotationY: 0
 };
 
-gui.add(cubic, 'rotationX', 0, 360).step(0.01);
-gui.add(cubic, 'rotationY', 0, 360).step(0.01);
-gui.add(cubic, 'cameraZ', 0, 10).step(0.01);
-gui.add(cubic, 'cameraX', 0, 1).step(0.01);
-gui.add(cubic, 'cameraY', 0, 1).step(0.01);
 gui.add(cubic, 'rotationX', 0, 3).step(0.01);
 gui.add(cubic, 'rotationY', 0, 3).step(0.01);
 
@@ -101,9 +108,6 @@ gui.add(cubic, 'rotationY', 0, 3).step(0.01);
 function animate() {
     requestAnimationFrame(animate);
 
-    camera.position.z = cubic.cameraZ;
-    camera.position.x = cubic.cameraX;
-    camera.position.y = cubic.cameraY;
     group.rotation.x = cubic.rotationX;
     group.rotation.y = cubic.rotationY;
 
