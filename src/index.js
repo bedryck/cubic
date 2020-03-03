@@ -9,47 +9,54 @@ const position = 0.103;
 
 let camera, scene, renderer, group;
 let geometry, material, mesh;
+const standartColors = {
+    right: 0x00228B22,
+    left: 0x006495ED,
+    under: 0x00FFFF00,
+    down: 0x00ffffff,
+    front: 0x00B22222,
+    back: 0x00FFA500
+}
 
+const lwrb1 = new Cubic(standartColors, [-position, -position, position]).cube
+const lwr2 = new Cubic(standartColors, [0, -position, position]).cube
+const lwrg3 = new Cubic(standartColors, [position, -position, position]).cube
 
-const lwrb1 = new Cubic(0x00228B22, [-position, -position, position]).cube
-const lwr2 = new Cubic(0x00228B22, [0, -position, position]).cube
-const lwrg3 = new Cubic(0x00228B22, [position, -position, position]).cube
+const lwb4 = new Cubic(standartColors, [-position, -position, 0]).cube
+const lw5 = new Cubic(standartColors, [0, -position, 0]).cube
+const lwg6 = new Cubic(standartColors, [position, -position, 0]).cube
 
-const lwb4 = new Cubic(0x00228B22, [-position, -position, 0]).cube
-const lw5 = new Cubic(0x00228B22, [0, -position, 0]).cube
-const lwg6 = new Cubic(0x00228B22, [position, -position, 0]).cube
-
-const lwbo7 = new Cubic(0x00228B22, [-position, -position, -position]).cube
-const lwo8 = new Cubic(0x00228B22, [0, -position, -position]).cube
-const lwog9 = new Cubic(0x00228B22, [position, -position, -position]).cube
-
-
-
-const mrb10 = new Cubic(0x00228B22, [-position, 0, position]).cube
-const mr11 = new Cubic(0x00228B22, [0, 0, position]).cube
-const mrg12 = new Cubic(0x00228B22, [position, 0, position]).cube
-
-const mrb13 = new Cubic(0x00228B22, [-position, 0, 0]).cube
-const m14 = new Cubic(0x00228B22, [0, 0, 0]).cube
-const mg15 = new Cubic(0x00228B22, [position, 0, 0]).cube
-
-const mbo16 = new Cubic(0x00228B22, [-position, 0, -position]).cube
-const mo17 = new Cubic(0x00228B22, [0, 0, -position]).cube
-const mog18 = new Cubic(0x00228B22, [position, 0, -position]).cube
+const lwbo7 = new Cubic(standartColors, [-position, -position, -position]).cube
+const lwo8 = new Cubic(standartColors, [0, -position, -position]).cube
+const lwog9 = new Cubic(standartColors, [position, -position, -position]).cube
 
 
 
-const uyrb19 = new Cubic(0x00228B22, [-position, position, position]).cube
-const uyr20 = new Cubic(0x00228B22, [0, position, position]).cube
-const uyrg21 = new Cubic(0x00228B22, [position, position, position]).cube
+const mrb10 = new Cubic(standartColors, [-position, 0, position]).cube
+const mr11 = new Cubic(standartColors, [0, 0, position]).cube
+const mrg12 = new Cubic(standartColors, [position, 0, position]).cube
 
-const uyb22 = new Cubic(0x00228B22, [-position, position, 0]).cube
-const uy23 = new Cubic(0x00228B22, [0, position, 0]).cube
-const uyg24 = new Cubic(0x00228B22, [position, position, 0]).cube
+const mrb13 = new Cubic(standartColors, [-position, 0, 0]).cube
+const m14 = new Cubic(standartColors, [0, 0, 0]).cube
+const mg15 = new Cubic(standartColors, [position, 0, 0]).cube
 
-const uybo25 = new Cubic(0x00228B22, [-position, position, -position]).cube
-const uyo26 = new Cubic(0x00228B22, [0, position, -position]).cube
-const uyog27 = new Cubic(0x00228B22, [position, position, -position]).cube
+const mbo16 = new Cubic(standartColors, [-position, 0, -position]).cube
+const mo17 = new Cubic(standartColors, [0, 0, -position]).cube
+const mog18 = new Cubic(standartColors, [position, 0, -position]).cube
+
+
+
+const uyrb19 = new Cubic(standartColors, [-position, position, position]).cube
+const uyr20 = new Cubic(standartColors, [0, position, position]).cube
+const uyrg21 = new Cubic(standartColors, [position, position, position]).cube
+
+const uyb22 = new Cubic(standartColors, [-position, position, 0]).cube
+const uy23 = new Cubic(standartColors, [0, position, 0]).cube
+const uyg24 = new Cubic(standartColors, [position, position, 0]).cube
+
+const uybo25 = new Cubic(standartColors, [-position, position, -position]).cube
+const uyo26 = new Cubic(standartColors, [0, position, -position]).cube
+const uyog27 = new Cubic(standartColors, [position, position, -position]).cube
 
 let cubicsArry = [
     lwrb1,
@@ -94,7 +101,6 @@ function init() {
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     const controls = new OrbitControls(camera, renderer.domElement)
-
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
