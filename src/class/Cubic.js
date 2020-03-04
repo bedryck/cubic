@@ -14,7 +14,7 @@ class Cubic {
         this.colors = colors;
         this.position = position;
         this.geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-        this.material = new THREE.MeshBasicMaterial({ color: 0xffffff, vertexColors: THREE.FaceColors });
+        this.material = new THREE.MeshPhongMaterial({ color: 0xffffff, vertexColors: THREE.FaceColors });
         this.mesh = new THREE.Mesh(this.geometry, this.material)
 
 
