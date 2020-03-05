@@ -4,6 +4,8 @@ import OrbitControls from 'three-orbitcontrols';
 import * as dat from 'dat.gui';
 import Cubic from './class/Cubic'
 import * as colors from './colors/colors';
+import TWEEN from '@tweenjs/tween.js';
+
 
 const position = 0.117;
 
@@ -96,17 +98,30 @@ function init() {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
     camera.position.z = 1
     group = new THREE.Group();
+    const bottomGroup = new THREE.Group();
     scene = new THREE.Scene();
     cubicsArry.forEach(item => {
         group.add(item)
     })
 
     const skyColor = 0xffffff  // light blue
-    const groundColor = 0xffffff; 
+    const groundColor = 0xeeeeee;
     const intensity = 1;
     const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
     scene.add(light);
 
+    var position = { z: 0 };
+    var target = {  z: Math.PI / 2 };
+
+    // bottomGroup.add(mr11)
+
+    var tween = new TWEEN.Tween(position).to(target, 5000);
+    tween.start();
+
+    tween.onUpdate(function () {
+        mr11.rotation.z = position.z
+        mrg12.rotation.z = position.z
+    });
 
 
     scene.add(group);
@@ -122,7 +137,7 @@ function init() {
 
 
 
-const gui = new dat.GUI();
+// const gui = new dat.GUI();
 
 
 
@@ -132,19 +147,21 @@ var cubic = {
     rotationY: 0
 };
 
-gui.add(cubic, 'rotationX', 0, 3).step(0.01);
-gui.add(cubic, 'rotationY', 0, 3).step(0.01);
+// gui.add(cubic, 'rotationX', 0, 3).step(0.01);
+// gui.add(cubic, 'rotationY', 0, 3).step(0.01);
 
 
 
 function animate() {
     requestAnimationFrame(animate);
 
-    group.rotation.x = cubic.rotationX;
-    group.rotation.y = cubic.rotationY;
+    // group.rotation.x = cubic.rotationX;
+    // group.rotation.y = cubic.rotationY;
 
 
     renderer.render(scene, camera);
+
+    TWEEN.update();
 
 }
 init();
