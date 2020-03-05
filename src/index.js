@@ -111,20 +111,31 @@ function init() {
     scene.add(light);
 
     var position = { z: 0 };
-    var target = {  z: Math.PI / 2 };
+    var target = { z: Math.PI / 2 };
 
-    // bottomGroup.add(mr11)
 
-    var tween = new TWEEN.Tween(position).to(target, 5000);
+    bottomGroup.add(lwrb1)
+    bottomGroup.add(lwr2)
+    bottomGroup.add(lwrg3)
+    bottomGroup.add(mrb10)
+    bottomGroup.add(mr11)
+    bottomGroup.add(mrg12)
+    bottomGroup.add(uyrb19)
+    bottomGroup.add(uyr20)
+    bottomGroup.add(uyrg21)
+
+
+
+    var tween = new TWEEN.Tween(position).to(target, 2000);
     tween.start();
 
     tween.onUpdate(function () {
-        mr11.rotation.z = position.z
-        mrg12.rotation.z = position.z
+        bottomGroup.rotation.z = position.z
     });
 
 
     scene.add(group);
+    scene.add(bottomGroup);
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     const controls = new OrbitControls(camera, renderer.domElement)
@@ -133,11 +144,6 @@ function init() {
     document.body.appendChild(renderer.domElement);
 
 }
-
-
-
-
-// const gui = new dat.GUI();
 
 
 
