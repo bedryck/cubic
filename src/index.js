@@ -3,24 +3,20 @@ import './style.css';
 import OrbitControls from 'three-orbitcontrols';
 import * as dat from 'dat.gui';
 import Cubic from './class/Cubic'
+import Cube from './class/Cube'
 import * as colors from './colors/colors';
 import TWEEN from '@tweenjs/tween.js';
+
+
+const mainCube = new Cube()
+
+console.log(mainCube)
 
 
 const position = 0.117;
 
 
 let camera, scene, renderer, group;
-let geometry, material, mesh;
-const standartColors = {
-    right: 0x00228B22,
-    left: 0x006495ED,
-    under: 0x00FFFF00,
-    down: 0x00ffffff,
-    front: 0x00B22222,
-    back: 0x00FFA500
-}
-
 
 
 const lwrb1 = new Cubic(colors.lwrb1, [-position, -position, position]).cube
@@ -98,8 +94,10 @@ function init() {
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
     camera.position.z = 1
     group = new THREE.Group();
-    const bottomGroup = new THREE.Group();
+    const bottomGroup = new THREE.Object3D();
+    const rightGroup = new THREE.Object3D();
     scene = new THREE.Scene();
+
     cubicsArry.forEach(item => {
         group.add(item)
     })
@@ -112,34 +110,65 @@ function init() {
 
     var position = { z: 0 };
     var target = { z: Math.PI / 2 };
+    var positionR = { z: 0 };
+    var targetR = { z: Math.PI / 2 };
 
 
-    bottomGroup.add(lwrb1)
-    bottomGroup.add(lwr2)
-    bottomGroup.add(lwrg3)
-    bottomGroup.add(mrb10)
-    bottomGroup.add(mr11)
-    bottomGroup.add(mrg12)
-    bottomGroup.add(uyrb19)
-    bottomGroup.add(uyr20)
-    bottomGroup.add(uyrg21)
+    bottomGroup.attach(lwrb1)
+    bottomGroup.attach(lwr2)
+    bottomGroup.attach(lwrg3)
 
+    bottomGroup.attach(mrb10)
+    bottomGroup.attach(mr11)
+    bottomGroup.attach(mrg12)
+    bottomGroup.attach(uyrb19)
+    bottomGroup.attach(uyr20)
+    bottomGroup.attach(uyrg21)
 
 
     var tween = new TWEEN.Tween(position).to(target, 2000);
+
+    var tweenRight = new TWEEN.Tween(positionR).to(targetR, 2000);
+
     tween.start();
 
     tween.onUpdate(function () {
         bottomGroup.rotation.z = position.z
     });
+    tween.onComplete(function () {
 
 
-    scene.add(group);
-    scene.add(bottomGroup);
+        rightGroup.attach(lwrb1)
+        rightGroup.attach(lwr2)
+        rightGroup.attach(lwrg3)
+        rightGroup.attach(lwg6)
+        rightGroup.attach(mg15)
+        rightGroup.attach(uyg24)
+        rightGroup.attach(lwog9)
+        rightGroup.attach(mog18)
+        rightGroup.attach(uyog27)
 
+        // scene.add(rightGroup);
+
+        tweenRight.start();
+    });
+    tweenRight.onUpdate(function () {
+        bottomGroup.rotation.z = position.z
+    });
+    tweenRight.onUpdate(function () {
+        rightGroup.rotation.x = -positionR.z
+    });
+
+    setTimeout(() => {
+        mainCube.frontRotate()
+    }, 3000)
+
+    scene.add(mainCube.frontGroup);
+    // scene.add(bottomGroup);
+
+    scene.add(mainCube.cube);
     renderer = new THREE.WebGLRenderer({ antialias: true });
     const controls = new OrbitControls(camera, renderer.domElement)
-
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
@@ -153,23 +182,16 @@ var cubic = {
     rotationY: 0
 };
 
-// gui.add(cubic, 'rotationX', 0, 3).step(0.01);
-// gui.add(cubic, 'rotationY', 0, 3).step(0.01);
-
 
 
 function animate() {
     requestAnimationFrame(animate);
 
-    // group.rotation.x = cubic.rotationX;
-    // group.rotation.y = cubic.rotationY;
-
-
     renderer.render(scene, camera);
-
+    mainCube.update()
     TWEEN.update();
 
 }
-init();
 
+init();
 animate();
