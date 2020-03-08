@@ -7,6 +7,8 @@ class Cube {
     constructor() {
         this.position = 0.117;
         this.startRotatePOsition = { r: 0 }
+        this.startRotatePOsitionTwo = { r: Math.PI / 2 }
+
         this.c0 = new Cubic(colors.lwrb1, [-this.position, -this.position, this.position]).cube;
         this.c1 = new Cubic(colors.lwr2, [0, -this.position, this.position]).cube;
         this.c2 = new Cubic(colors.lwrg3, [this.position, -this.position, this.position]).cube;
@@ -39,15 +41,21 @@ class Cube {
         this.allGroup = new THREE.Group();
 
         this.frontGroup = new THREE.Object3D();
-        this.frontTween = new TWEEN.Tween(this.startRotatePOsition).to({ r: Math.PI / 2 }, 2000);
 
-        this.frontTween.onUpdate(() => {
-            this.frontGroup.rotation.z = this.startRotatePOsition.r
+        this.frontTween = new TWEEN.Tween(this.frontGroup.rotation).to({ z: this.frontGroup.rotation.z + Math.PI / 2 }, 2000);
+
+        this.frontTweenTwo = new TWEEN.Tween(this.startRotatePOsitionTwo).to({ r: Math.PI }, 2000);
+
+
+        // this.frontTween.onUpdate(() => {
+        //     this.frontGroup.rotation.z = this.startRotatePOsition.r
+        // });
+
+        this.frontTweenTwo.onUpdate(() => {
+            this.frontGroup.rotation.z = this.startRotatePOsitionTwo.r
         });
 
-        this.frontTween.onComplete(()=>{
-            this.frontRotate
-        })
+
 
     }
 
@@ -62,6 +70,8 @@ class Cube {
         TWEEN.update();
     }
 
+
+
     frontRotate() {
         this.frontGroup.attach(this.c0)
         this.frontGroup.attach(this.c1)
@@ -72,10 +82,17 @@ class Cube {
         this.frontGroup.attach(this.c18)
         this.frontGroup.attach(this.c19)
         this.frontGroup.attach(this.c20)
-        this.frontTween.start()
+
+        console.log(this.frontGroup.rotation.z)
+
+        const frontTween = new TWEEN.Tween(this.frontGroup.rotation).to({ z: this.frontGroup.rotation.z + Math.PI / 2 }, 2000);
+
+        frontTween.start()
 
 
     }
 }
 
 export default Cube;
+
+//TO DO check group position rotate and add pi/2 to current positiont for rotation such get method
