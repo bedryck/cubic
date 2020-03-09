@@ -6,8 +6,9 @@ import TWEEN from '@tweenjs/tween.js';
 class Cube {
     constructor() {
         this.position = 0.117;
-        this.startRotatePOsition = { r: 0 }
-        this.startRotatePOsitionTwo = { r: Math.PI / 2 }
+
+        this.g90 = Math.PI / 2;
+        this.rotationSpeed = 1000;
 
         this.c0 = new Cubic(colors.lwrb1, [-this.position, -this.position, this.position]).cube;
         this.c1 = new Cubic(colors.lwr2, [0, -this.position, this.position]).cube;
@@ -40,21 +41,17 @@ class Cube {
         this.c26 = new Cubic(colors.uyog27, [this.position, this.position, -this.position]).cube;
         this.allGroup = new THREE.Group();
 
-        this.frontGroup = new THREE.Object3D();
+        this.frontGroupZ = new THREE.Object3D();
+        this.middleGroupZ = new THREE.Object3D();
+        this.backGroupZ = new THREE.Object3D();
 
-        this.frontTween = new TWEEN.Tween(this.frontGroup.rotation).to({ z: this.frontGroup.rotation.z + Math.PI / 2 }, 2000);
+        this.frontGroupX = new THREE.Object3D();
+        this.middleGroupX = new THREE.Object3D();
+        this.backGroupX = new THREE.Object3D();
 
-        this.frontTweenTwo = new TWEEN.Tween(this.startRotatePOsitionTwo).to({ r: Math.PI }, 2000);
-
-
-        // this.frontTween.onUpdate(() => {
-        //     this.frontGroup.rotation.z = this.startRotatePOsition.r
-        // });
-
-        this.frontTweenTwo.onUpdate(() => {
-            this.frontGroup.rotation.z = this.startRotatePOsitionTwo.r
-        });
-
+        this.frontGroupY = new THREE.Object3D();
+        this.middleGroupY = new THREE.Object3D();
+        this.backGroupY = new THREE.Object3D();
 
 
     }
@@ -72,25 +69,151 @@ class Cube {
 
 
 
-    frontRotate() {
-        this.frontGroup.attach(this.c0)
-        this.frontGroup.attach(this.c1)
-        this.frontGroup.attach(this.c2)
-        this.frontGroup.attach(this.c9)
-        this.frontGroup.attach(this.c10)
-        this.frontGroup.attach(this.c11)
-        this.frontGroup.attach(this.c18)
-        this.frontGroup.attach(this.c19)
-        this.frontGroup.attach(this.c20)
+    frontRotateZ(direction = 1) {
+        this.frontGroupZ.attach(this.c0)
+        this.frontGroupZ.attach(this.c1)
+        this.frontGroupZ.attach(this.c2)
+        this.frontGroupZ.attach(this.c9)
+        this.frontGroupZ.attach(this.c10)
+        this.frontGroupZ.attach(this.c11)
+        this.frontGroupZ.attach(this.c18)
+        this.frontGroupZ.attach(this.c19)
+        this.frontGroupZ.attach(this.c20)
 
-        console.log(this.frontGroup.rotation.z)
-
-        const frontTween = new TWEEN.Tween(this.frontGroup.rotation).to({ z: this.frontGroup.rotation.z + Math.PI / 2 }, 2000);
-
+        const frontTween = new TWEEN.Tween(this.frontGroupZ.rotation).to({ z: this.frontGroupZ.rotation.z + this.g90 * direction }, this.rotationSpeed);
         frontTween.start()
-
-
     }
+
+    middleRotateZ(direction = 1) {
+        this.middleGroupZ.attach(this.c3)
+        this.middleGroupZ.attach(this.c4)
+        this.middleGroupZ.attach(this.c5)
+        this.middleGroupZ.attach(this.c12)
+        this.middleGroupZ.attach(this.c13)
+        this.middleGroupZ.attach(this.c14)
+        this.middleGroupZ.attach(this.c21)
+        this.middleGroupZ.attach(this.c22)
+        this.middleGroupZ.attach(this.c23)
+
+        const frontTween = new TWEEN.Tween(this.middleGroupZ.rotation).to({ z: this.middleGroupZ.rotation.z + this.g90 * direction }, this.rotationSpeed);
+        frontTween.start()
+    }
+
+    backRotateZ(direction = 1) {
+        this.backGroupZ.attach(this.c6)
+        this.backGroupZ.attach(this.c7)
+        this.backGroupZ.attach(this.c8)
+        this.backGroupZ.attach(this.c15)
+        this.backGroupZ.attach(this.c16)
+        this.backGroupZ.attach(this.c17)
+        this.backGroupZ.attach(this.c24)
+        this.backGroupZ.attach(this.c25)
+        this.backGroupZ.attach(this.c26)
+
+        const frontTween = new TWEEN.Tween(this.backGroupZ.rotation).to({ z: this.backGroupZ.rotation.z + this.g90 * direction }, this.rotationSpeed);
+        frontTween.start()
+    }
+
+
+
+
+
+
+    frontRotateX(direction = 1) {
+        this.frontGroupX.attach(this.c2)
+        this.frontGroupX.attach(this.c5)
+        this.frontGroupX.attach(this.c8)
+        this.frontGroupX.attach(this.c11)
+        this.frontGroupX.attach(this.c14)
+        this.frontGroupX.attach(this.c17)
+        this.frontGroupX.attach(this.c20)
+        this.frontGroupX.attach(this.c23)
+        this.frontGroupX.attach(this.c26)
+
+        const frontTween = new TWEEN.Tween(this.frontGroupX.rotation).to({ x: this.frontGroupX.rotation.x + this.g90 * direction }, this.rotationSpeed);
+        frontTween.start()
+    }
+
+    middleRotateX(direction = 1) {
+        this.middleGroupX.attach(this.c1)
+        this.middleGroupX.attach(this.c4)
+        this.middleGroupX.attach(this.c7)
+        this.middleGroupX.attach(this.c10)
+        this.middleGroupX.attach(this.c13)
+        this.middleGroupX.attach(this.c16)
+        this.middleGroupX.attach(this.c19)
+        this.middleGroupX.attach(this.c22)
+        this.middleGroupX.attach(this.c25)
+
+        const frontTween = new TWEEN.Tween(this.middleGroupX.rotation).to({ x: this.middleGroupX.rotation.x + this.g90 * direction }, this.rotationSpeed);
+        frontTween.start()
+    }
+
+    backRotateX(direction = 1) {
+        this.backGroupX.attach(this.c0)
+        this.backGroupX.attach(this.c3)
+        this.backGroupX.attach(this.c6)
+        this.backGroupX.attach(this.c9)
+        this.backGroupX.attach(this.c12)
+        this.backGroupX.attach(this.c15)
+        this.backGroupX.attach(this.c18)
+        this.backGroupX.attach(this.c21)
+        this.backGroupX.attach(this.c24)
+
+        const frontTween = new TWEEN.Tween(this.backGroupX.rotation).to({ x: this.backGroupX.rotation.x + this.g90 * direction }, this.rotationSpeed);
+        frontTween.start()
+    }
+
+
+
+
+    frontRotateY(direction = 1) {
+        this.frontGroupY.attach(this.c18)
+        this.frontGroupY.attach(this.c19)
+        this.frontGroupY.attach(this.c20)
+        this.frontGroupY.attach(this.c23)
+        this.frontGroupY.attach(this.c22)
+        this.frontGroupY.attach(this.c21)
+        this.frontGroupY.attach(this.c26)
+        this.frontGroupY.attach(this.c25)
+        this.frontGroupY.attach(this.c24)
+
+        const frontTween = new TWEEN.Tween(this.frontGroupY.rotation).to({ y: this.frontGroupY.rotation.y + this.g90 * direction }, this.rotationSpeed);
+        frontTween.start()
+    }
+
+    middleRotateY(direction = 1) {
+        this.middleGroupY.attach(this.c9)
+        this.middleGroupY.attach(this.c10)
+        this.middleGroupY.attach(this.c11)
+        this.middleGroupY.attach(this.c12)
+        this.middleGroupY.attach(this.c13)
+        this.middleGroupY.attach(this.c14)
+        this.middleGroupY.attach(this.c15)
+        this.middleGroupY.attach(this.c16)
+        this.middleGroupY.attach(this.c17)
+
+        const frontTween = new TWEEN.Tween(this.middleGroupY.rotation).to({ y: this.middleGroupY.rotation.y + this.g90 * direction }, this.rotationSpeed);
+        frontTween.start()
+    }
+
+    backRotateY(direction = 1) {
+        this.backGroupY.attach(this.c0)
+        this.backGroupY.attach(this.c1)
+        this.backGroupY.attach(this.c2)
+        this.backGroupY.attach(this.c3)
+        this.backGroupY.attach(this.c4)
+        this.backGroupY.attach(this.c5)
+        this.backGroupY.attach(this.c6)
+        this.backGroupY.attach(this.c7)
+        this.backGroupY.attach(this.c8)
+
+        const frontTween = new TWEEN.Tween(this.backGroupY.rotation).to({ y: this.backGroupY.rotation.y + this.g90 * direction }, this.rotationSpeed);
+        frontTween.start()
+    }
+
+
+
 }
 
 export default Cube;
