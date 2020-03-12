@@ -11,7 +11,9 @@ let camera, scene, renderer;
 function init() {
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
-    camera.position.z = 1
+    camera.position.z = 1.1
+    camera.position.y = 1.1
+    camera.position.x = 1.1
     scene = new THREE.Scene();
 
     const skyColor = 0xffffff
@@ -21,7 +23,7 @@ function init() {
     scene.add(light);
 
     setTimeout(() => {
-        mainCube.backRotateY(-1)
+        mainCube.frontRotateZ(-1)
     }, 1000)
 
     scene.add(mainCube.frontGroupZ);

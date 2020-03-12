@@ -10,9 +10,12 @@ const standartColors = {
 }
 
 class Cubic {
-    constructor(colors = standartColors, position) {
+    constructor(colors = standartColors, position, groups) {
+        this.widthBetween = 0.117;
+        this.rotatePosition = position;
         this.colors = colors;
-        this.position = position;
+        this.position = [position[0] * this.widthBetween, position[1] * this.widthBetween, position[2] * this.widthBetween];
+        this.groups = groups;
         this.geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
         this.material = new THREE.MeshPhongMaterial({ color: 0xffffff, vertexColors: THREE.FaceColors });
         this.mesh = new THREE.Mesh(this.geometry, this.material)
@@ -37,10 +40,24 @@ class Cubic {
         this.geometry.faces[10].color.setHex(this.colors.back) // orange back
         this.geometry.faces[11].color.setHex(this.colors.back)
 
-        this.mesh.position.set(...position);
+        this.mesh.position.set(...this.position);
 
     }
 
+    rotate = (side, direction) => {
+        console.log(side, direction);
+        console.log('--groups--', this.groups);
+        if (direction) {
+            switch (side) {
+                case 'front':
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
 
     get cube() {
         return this.mesh
