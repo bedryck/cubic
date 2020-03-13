@@ -8,6 +8,7 @@ const mainCube = new Cube()
 let camera, scene, renderer;
 
 
+
 function init() {
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
@@ -23,7 +24,27 @@ function init() {
     scene.add(light);
 
     setTimeout(() => {
-        mainCube.frontRotateZ(-1)
+        mainCube.frontRotateZ(1)
+            .then(() => mainCube.frontRotateY(1))
+            .then(() => mainCube.frontRotateX(-1))
+            .then(() => mainCube.middleRotateZ(1))
+            .then(() => mainCube.middleRotateY(-1))
+            .then(() => mainCube.middleRotateX(1))
+            .then(() => mainCube.backRotateZ(-1))
+            .then(() => mainCube.backRotateY(1))
+            .then(() => mainCube.backRotateX(-1))
+
+            .then(() => mainCube.backRotateX(1))
+            .then(() => mainCube.backRotateY(-1))
+            .then(() => mainCube.backRotateZ(1))
+            .then(() => mainCube.middleRotateX(-1))
+            .then(() => mainCube.middleRotateY(1))
+            .then(() => mainCube.middleRotateZ(-1))
+            .then(() => mainCube.frontRotateX(1))
+            .then(() => mainCube.frontRotateY(-1))
+            .then(() => mainCube.frontRotateZ(-1))
+
+            
     }, 1000)
 
     scene.add(mainCube.frontGroupZ);

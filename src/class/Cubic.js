@@ -63,5 +63,9 @@ class Cubic {
         return this.mesh
     };
 
+    rotatePos = (value) => {
+        this.rotatePosition = value;
+    }
+
 }
 export default Cubic;
