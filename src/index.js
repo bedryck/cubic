@@ -1,10 +1,17 @@
 import * as THREE from 'three';
 import './style.css';
 import OrbitControls from 'three-orbitcontrols';
-import Cube from './class/Cube'
+import mainCube from './cubeInit'
 
 
-const mainCube = new Cube()
+import Vue from 'vue'
+import app from './App.vue'
+
+new Vue({
+    el: '#app',
+    render: h => h(app)
+})
+
 let camera, scene, renderer;
 
 
@@ -23,29 +30,7 @@ function init() {
     const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
     scene.add(light);
 
-    setTimeout(() => {
-        mainCube.frontRotateZ(1)
-            .then(() => mainCube.frontRotateY(1))
-            .then(() => mainCube.frontRotateX(-1))
-            .then(() => mainCube.middleRotateZ(1))
-            .then(() => mainCube.middleRotateY(-1))
-            .then(() => mainCube.middleRotateX(1))
-            .then(() => mainCube.backRotateZ(-1))
-            .then(() => mainCube.backRotateY(1))
-            .then(() => mainCube.backRotateX(-1))
-
-            .then(() => mainCube.backRotateX(1))
-            .then(() => mainCube.backRotateY(-1))
-            .then(() => mainCube.backRotateZ(1))
-            .then(() => mainCube.middleRotateX(-1))
-            .then(() => mainCube.middleRotateY(1))
-            .then(() => mainCube.middleRotateZ(-1))
-            .then(() => mainCube.frontRotateX(1))
-            .then(() => mainCube.frontRotateY(-1))
-            .then(() => mainCube.frontRotateZ(-1))
-
-            
-    }, 1000)
+  
 
     scene.add(mainCube.frontGroupZ);
     scene.add(mainCube.middleGroupZ);
@@ -77,3 +62,11 @@ function animate() {
 
 init();
 animate();
+
+var test = {
+    foo() { console.log('foo') },
+    bar() { console.log('bar') },
+    baz() { console.log('baz') }
+}
+
+export default test
