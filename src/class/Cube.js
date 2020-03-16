@@ -3,20 +3,17 @@ import Cubic from './Cubic';
 import * as colors from '../colors/colors';
 import TWEEN from '@tweenjs/tween.js';
 
-const frontRotationZ = [[-1, 1, 1], [0, 1, 1], [1, 1, 1], [1, 0, 1], [1, -1, 1], [0, -1, 1], [-1, -1, 1], [-1, 0, 1]]
-const middleRotationZ = [[-1, 1, 0], [0, 1, 0], [1, 1, 0], [1, 0, 0], [1, -1, 0], [0, -1, 0], [-1, -1, 0], [-1, 0, 0]]
-const backRotationZ = [[-1, 1, -1], [0, 1, -1], [1, 1, -1], [1, 0, -1], [1, -1, -1], [0, -1, -1], [-1, -1, -1], [-1, 0, -1]]
-
-const frontRotationX = [[1, 1, 1], [1, 1, 0], [1, 1, -1], [1, 0, -1], [1, -1, -1], [1, -1, 0], [1, -1, 1], [1, 0, 1]]
-const middleRotationX = [[0, 1, 1], [0, 1, 0], [0, 1, -1], [0, 0, -1], [0, -1, -1], [0, -1, 0], [0, -1, 1], [0, 0, 1]]
-const backRotationX = [[-1, 1, 1], [-1, 1, 0], [-1, 1, -1], [-1, 0, -1], [-1, -1, -1], [-1, -1, 0], [-1, -1, 1], [-1, 0, 1]]
-
-const frontRotationY = [[-1, 1, -1], [0, 1, -1], [1, 1, -1], [1, 1, 0], [1, 1, 1], [0, 1, 1], [-1, 1, 1], [-1, 1, 0]]
-const middleRotationY = [[-1, 0, -1], [0, 0, -1], [1, 0, -1], [1, 0, 0], [1, 0, 1], [0, 0, 1], [-1, 0, 1], [-1, 0, 0]]
-const backRotationY = [[-1, -1, -1], [0, -1, -1], [1, -1, -1], [1, -1, 0], [1, -1, 1], [0, -1, 1], [-1, -1, 1], [-1, -1, 0]]
-
-
-
+import {
+    frontRotationZ,
+    middleRotationZ,
+    backRotationZ,
+    frontRotationX,
+    middleRotationX,
+    backRotationX,
+    frontRotationY,
+    middleRotationY,
+    backRotationY,
+} from '../group/groups'
 
 
 class Cube {
@@ -93,7 +90,7 @@ class Cube {
         currentPosition == -2 ? currentPosition = 6 : currentPosition;
         currentPosition == 8 ? currentPosition = 0 : currentPosition;
         currentPosition == 9 ? currentPosition = 1 : currentPosition;
-     
+
 
         return array[currentPosition];
     }

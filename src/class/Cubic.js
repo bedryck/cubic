@@ -19,7 +19,7 @@ class Cubic {
         this.geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
         this.material = new THREE.MeshPhongMaterial({ color: 0xffffff, vertexColors: THREE.FaceColors });
         this.mesh = new THREE.Mesh(this.geometry, this.material)
-
+        this.mesh.rotatePosition = position;
 
 
         this.geometry.faces[0].color.setHex(this.colors.right) // green right
@@ -65,6 +65,7 @@ class Cubic {
 
     rotatePos = (value) => {
         this.rotatePosition = value;
+        this.mesh.rotatePosition = value;
     }
 
 }
