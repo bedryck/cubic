@@ -107,51 +107,91 @@ var test = {
     baz() { console.log('baz') }
 }
 
-let startDrag, direction
+let startDrag, startArray = [], finishArray = [], allAllowGroup = []
 
 function onDocumentMouseDown(event) {
-
     event.preventDefault();
-    var intersects = raycaster.intersectObjects(scene.children, true);
 
+    var intersects = raycaster.intersectObjects(scene.children, true);
     if (intersects.length > 0) {
-        startDrag = intersects[0].uv;
+
+        startDrag = {
+            x: event.clientX,
+            y: event.clientY
+        };
 
         for (const key in groups) {
             if (groups.hasOwnProperty(key)) {
                 const element = groups[key];
                 let currentPosition = element.findIndex(element => JSON.stringify(element) == JSON.stringify(intersects[0].object.rotatePosition));
                 if (currentPosition != -1) {
-                    console.log(key)
+                    startArray.push(key)
                 }
             }
         }
+    } else {
+
     }
 
 
 }
 
+function getRotate(key) {
+    switch (key) {
+        case "frontRotationZ":
+
+            break;
+        case "frontRotationX":
+
+            break;
+        case "frontRotationY":
+
+            break;
+
+        case "middleRotationZ":
+
+            break;
+        case "middleRotationX":
+
+            break;
+        case "middleRotationY":
+
+            break;
+
+        case "backRotationZ":
+
+            break;
+        case "backRotationX":
+
+            break;
+        case "backRotationY":
+
+            break;
+
+
+        default:
+            break;
+    }
+}
+
 function onDocumentMouseUp(event) {
-    let currentMousePosition;
     event.preventDefault();
+    let currentMousePosition;
+
     var intersects = raycaster.intersectObjects(scene.children, true);
-    console.log(intersects)
 
 
     if (intersects.length > 0) {
-        currentMousePosition = intersects[0].uv;
-        console.log(startDrag, currentMousePosition)
-        if (startDrag.x <= currentMousePosition.x) {
-            console.log('right')
-        } else {
-            console.log('left')
+
+        console.log(intersects[0].point)
+
+        currentMousePosition = {
+            x: event.clientX,
+            y: event.clientY
         }
 
-        if (startDrag.y <= currentMousePosition.y) {
-            console.log('top')
-        } else {
-            console.log('bot')
-        }
+
+
 
 
 
@@ -161,10 +201,51 @@ function onDocumentMouseUp(event) {
                 const element = groups[key];
                 let currentPosition = element.findIndex(element => JSON.stringify(element) == JSON.stringify(intersects[0].object.rotatePosition));
                 if (currentPosition != -1) {
-                    console.log(key)
+                    finishArray.push(key)
+
                 }
             }
         }
+
+
+
+        if (startArray[0] == finishArray[0]) {
+            console.log(startArray[0])
+            allAllowGroup.push(startArray[0])
+        }
+        if (startArray[1] == finishArray[1]) {
+            console.log(startArray[1])
+            allAllowGroup.push(startArray[1])
+
+
+        }
+        if (startArray[2] == finishArray[2]) {
+            console.log(startArray[2])
+            allAllowGroup.push(startArray[2])
+
+
+        }
+
+
+        if (Math.abs(startDrag.x - currentMousePosition.x) > Math.abs(startDrag.y - currentMousePosition.y)) {
+            console.log('horizontal')
+            let direction = startDrag.x <= currentMousePosition.x ? -1 : 1
+
+        } else {
+            console.log('vertical')
+            console.log(camera)
+            let direction = startDrag.y >= currentMousePosition.y ? 1 : -1
+
+            const found = allAllowGroup.find(element => element == 'frontRotationX' || element == 'middleRotationX' || element == 'backRotationX');
+            allAllowGroup = []
+            startArray = []
+            finishArray = []
+            // mainCube[found](direction)
+
+        }
+
+
+
     } else {
 
     }
@@ -172,22 +253,19 @@ function onDocumentMouseUp(event) {
 
 function onMouseMove(event) {
 
-    // calculate mouse position in normalized device coordinates
-    // (-1 to +1) for both components
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
 
-
-
     var intersects = raycaster.intersectObjects(scene.children, true);
-
     if (intersects.length > 0) {
-        controls.enabled = false;
+        controls.enableRotate = false;
+
     } else {
-        controls.enabled = true;
+
+        controls.enableRotate = true;
     }
 
 }
