@@ -9,15 +9,15 @@ import app from './App.vue'
 
 
 import {
-    frontRotationZ,
-    middleRotationZ,
-    backRotationZ,
-    frontRotationX,
-    middleRotationX,
-    backRotationX,
-    frontRotationY,
-    middleRotationY,
-    backRotationY,
+    frontRotateZ,
+    middleRotateZ,
+    backRotateZ,
+    frontRotateX,
+    middleRotateX,
+    backRotateX,
+    frontRotateY,
+    middleRotateY,
+    backRotateY,
 } from './group/groups'
 
 new Vue({
@@ -29,15 +29,15 @@ let camera, scene, renderer, controls;
 const mouse = new THREE.Vector2()
 const raycaster = new THREE.Raycaster();
 const groups = {
-    frontRotationZ,
-    middleRotationZ,
-    backRotationZ,
-    frontRotationX,
-    middleRotationX,
-    backRotationX,
-    frontRotationY,
-    middleRotationY,
-    backRotationY,
+    frontRotateZ,
+    middleRotateZ,
+    backRotateZ,
+    frontRotateX,
+    middleRotateX,
+    backRotateX,
+    frontRotateY,
+    middleRotateY,
+    backRotateY,
 }
 
 function init() {
@@ -101,13 +101,23 @@ function animate() {
 init();
 animate();
 
-var test = {
-    foo() { console.log('foo') },
-    bar() { console.log('bar') },
-    baz() { console.log('baz') }
+
+let startDrag, startArray = [], finishArray = [], allAllowGroup = [], direction
+const x = {
+    vertical: { frontRotationZ: mainCube.frontRotateZ, middleRotationZ: mainCube.middleRotateZ, backRotationZ: mainCube.backRotateZ },
+    horizontal: { frontRotationY: mainCube.frontRotateY, middleRotationY: mainCube.middleRotateY, backRotationY: mainCube.backRotateY },
 }
 
-let startDrag, startArray = [], finishArray = [], allAllowGroup = []
+const y = {
+    vertical: { frontRotationX: mainCube.frontRotateX, middleRotationX: mainCube.middleRotateX, backRotationX: mainCube.backRotateX },
+    horizontal: { frontRotationZ: mainCube.frontRotateZ, middleRotationZ: mainCube.middleRotateZ, backRotationZ: mainCube.backRotateZ },
+}
+
+const z = {
+    vertical: { frontRotationX: mainCube.frontRotateX, middleRotationX: mainCube.middleRotateX, backRotationX: mainCube.backRotateX },
+    horizontal: { frontRotationY: mainCube.frontRotateY, middleRotationY: mainCube.middleRotateY, backRotationY: mainCube.backRotateY },
+}
+
 
 function onDocumentMouseDown(event) {
     event.preventDefault();
@@ -136,43 +146,6 @@ function onDocumentMouseDown(event) {
 
 }
 
-function getRotate(key) {
-    switch (key) {
-        case "frontRotationZ":
-
-            break;
-        case "frontRotationX":
-
-            break;
-        case "frontRotationY":
-
-            break;
-
-        case "middleRotationZ":
-
-            break;
-        case "middleRotationX":
-
-            break;
-        case "middleRotationY":
-
-            break;
-
-        case "backRotationZ":
-
-            break;
-        case "backRotationX":
-
-            break;
-        case "backRotationY":
-
-            break;
-
-
-        default:
-            break;
-    }
-}
 
 function onDocumentMouseUp(event) {
     event.preventDefault();
@@ -185,14 +158,12 @@ function onDocumentMouseUp(event) {
 
         console.log(intersects[0].point)
 
+
+
         currentMousePosition = {
             x: event.clientX,
             y: event.clientY
         }
-
-
-
-
 
 
 
@@ -222,33 +193,73 @@ function onDocumentMouseUp(event) {
         if (startArray[2] == finishArray[2]) {
             console.log(startArray[2])
             allAllowGroup.push(startArray[2])
-
-
         }
 
 
         if (Math.abs(startDrag.x - currentMousePosition.x) > Math.abs(startDrag.y - currentMousePosition.y)) {
-            console.log('horizontal')
-            let direction = startDrag.x <= currentMousePosition.x ? -1 : 1
+            direction = ['horizontal', startDrag.x <= currentMousePosition.x ? -1 : 1]
 
         } else {
-            console.log('vertical')
-            console.log(camera)
-            let direction = startDrag.y >= currentMousePosition.y ? 1 : -1
+            direction = ['vertical', startDrag.y >= currentMousePosition.y ? 1 : -1]
+        }
+        console.log(direction)
 
-            const found = allAllowGroup.find(element => element == 'frontRotationX' || element == 'middleRotationX' || element == 'backRotationX');
-            allAllowGroup = []
-            startArray = []
-            finishArray = []
-            // mainCube[found](direction)
+        if (Math.abs(intersects[0].point.x.toFixed(3)) == 0.167) {
+            let side = allAllowGroup.find(element => element[element.length - 1] != "X")
+            console.log(side, '----->', allAllowGroup)
+            let correctDirection = intersects[0].point.x.toFixed(3) > 0 ? 1 : -1;
+            correctDirection *= direction[1]
+
+            try {
+                side && mainCube[side](direction[1] * correctDirection)
+
+
+            } catch (error) {
+                console.log(error)
+            }
+
+
+        }
+        if (Math.abs(intersects[0].point.y.toFixed(3)) == 0.167) {
+
+            let side = allAllowGroup.find(element => element[element.length - 1] != "Y")
+            console.log(side, '----->', allAllowGroup)
+
+            let correctDirection = intersects[0].point.y.toFixed(3) > 0 ? 1 : -1;
+            correctDirection *= direction[1]
+
+            try {
+
+                side && mainCube[side](correctDirection)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        if (Math.abs(intersects[0].point.z.toFixed(3)) == 0.167) {
+
+            let side = allAllowGroup.find(element => element[element.length - 1] != "Z")
+            console.log(side, '----->', allAllowGroup)
+
+            let correctDirection = intersects[0].point.z.toFixed(3) > 0 ? 1 : -1;
+            correctDirection *= direction[1]
+            console.log(correctDirection)
+            try {
+
+                side && mainCube[side](correctDirection)
+            } catch (error) {
+                console.log(error)
+            }
 
         }
 
 
 
-    } else {
-
     }
+
+    allAllowGroup = []
+    startArray = []
+    finishArray = []
 }
 
 function onMouseMove(event) {
@@ -273,4 +284,3 @@ window.addEventListener('mousemove', onMouseMove, false);
 document.addEventListener('mousedown', onDocumentMouseDown, false);
 document.addEventListener('mouseup', onDocumentMouseUp, false);
 
-export default test

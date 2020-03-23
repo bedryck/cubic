@@ -4,15 +4,15 @@ import * as colors from '../colors/colors';
 import TWEEN from '@tweenjs/tween.js';
 
 import {
-    frontRotationZ,
-    middleRotationZ,
-    backRotationZ,
-    frontRotationX,
-    middleRotationX,
-    backRotationX,
-    frontRotationY,
-    middleRotationY,
-    backRotationY,
+    frontRotateZ,
+    middleRotateZ,
+    backRotateZ,
+    frontRotateX,
+    middleRotateX,
+    backRotateX,
+    frontRotateY,
+    middleRotateY,
+    backRotateY,
 } from '../group/groups'
 
 
@@ -100,7 +100,7 @@ class Cube {
             if (this['c' + index].rotatePosition[2] === 1) {
                 this.frontGroupZ.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], frontRotationZ, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], frontRotateZ, -direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
 
@@ -108,7 +108,7 @@ class Cube {
         }
 
 
-        const frontTween = new TWEEN.Tween(this.frontGroupZ.rotation).to({ z: this.frontGroupZ.rotation.z + this.g90 * direction * - 1 }, this.rotationSpeed);
+        const frontTween = new TWEEN.Tween(this.frontGroupZ.rotation).to({ z: this.frontGroupZ.rotation.z + this.g90 * direction}, this.rotationSpeed);
         frontTween.start()
         return new Promise((resolve) => {
             frontTween.onComplete(() => {
@@ -123,13 +123,13 @@ class Cube {
             if (this['c' + index].rotatePosition[2] === 0) {
                 this.middleGroupZ.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], middleRotationZ, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], middleRotateZ, -direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
         }
 
-        const frontTween = new TWEEN.Tween(this.middleGroupZ.rotation).to({ z: this.middleGroupZ.rotation.z + this.g90 * direction * -1 }, this.rotationSpeed);
+        const frontTween = new TWEEN.Tween(this.middleGroupZ.rotation).to({ z: this.middleGroupZ.rotation.z + this.g90 * direction}, this.rotationSpeed);
         frontTween.start()
 
         return new Promise((resolve) => {
@@ -145,13 +145,13 @@ class Cube {
             if (this['c' + index].rotatePosition[2] === -1) {
                 this.backGroupZ.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], backRotationZ, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], backRotateZ, -direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
         }
 
-        const frontTween = new TWEEN.Tween(this.backGroupZ.rotation).to({ z: this.backGroupZ.rotation.z + this.g90 * direction * -1 }, this.rotationSpeed);
+        const frontTween = new TWEEN.Tween(this.backGroupZ.rotation).to({ z: this.backGroupZ.rotation.z + this.g90 * direction}, this.rotationSpeed);
         frontTween.start()
 
         return new Promise((resolve) => {
@@ -169,7 +169,7 @@ class Cube {
             if (this['c' + index].rotatePosition[0] === 1) {
                 this.frontGroupX.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], frontRotationX, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], frontRotateX, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
@@ -190,7 +190,7 @@ class Cube {
             if (this['c' + index].rotatePosition[0] === 0) {
                 this.middleGroupX.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], middleRotationX, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], middleRotateX, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
@@ -211,7 +211,7 @@ class Cube {
             if (this['c' + index].rotatePosition[0] === -1) {
                 this.backGroupX.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], backRotationX, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], backRotateX, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
@@ -235,7 +235,7 @@ class Cube {
             if (this['c' + index].rotatePosition[1] === 1) {
                 this.frontGroupY.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], frontRotationY, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], frontRotateY, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
@@ -259,7 +259,7 @@ class Cube {
             if (this['c' + index].rotatePosition[1] === 0) {
                 this.middleGroupY.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], middleRotationY, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], middleRotateY, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
@@ -280,7 +280,7 @@ class Cube {
             if (this['c' + index].rotatePosition[1] === -1) {
                 this.backGroupY.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], backRotationY, direction)
+                let currentPosition = this.getNewPosition(this['c' + index], backRotateY, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
