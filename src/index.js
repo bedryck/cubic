@@ -43,9 +43,9 @@ const groups = {
 function init() {
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
-    camera.position.z = 1.1
-    camera.position.y = 1.1
-    camera.position.x = 1.1
+    camera.position.z = 0.8
+    camera.position.y = 0.8
+    camera.position.x = 0.8
     scene = new THREE.Scene();
 
     const skyColor = 0xffffff
@@ -82,6 +82,7 @@ function init() {
 
 
     controls = new OrbitControls(camera, renderer.domElement)
+    controls.enablePan = false
 
 
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -102,7 +103,7 @@ init();
 animate();
 
 
-let startDrag, startArray = [], finishArray = [], allAllowGroup = [], direction
+let startDrag, startArray = [], finishArray = [], allAllowGroup = [], direction, startIndex, finishIndex
 const x = {
     vertical: { frontRotationZ: mainCube.frontRotateZ, middleRotationZ: mainCube.middleRotateZ, backRotationZ: mainCube.backRotateZ },
     horizontal: { frontRotationY: mainCube.frontRotateY, middleRotationY: mainCube.middleRotateY, backRotationY: mainCube.backRotateY },
@@ -136,6 +137,8 @@ function onDocumentMouseDown(event) {
                 let currentPosition = element.findIndex(element => JSON.stringify(element) == JSON.stringify(intersects[0].object.rotatePosition));
                 if (currentPosition != -1) {
                     startArray.push(key)
+                    startIndex = currentPosition
+
                 }
             }
         }
@@ -144,6 +147,59 @@ function onDocumentMouseDown(event) {
     }
 
 
+}
+
+function getDirection(start, end) {
+    let direction;
+
+    if (end > start) {
+        direction = 1
+
+    }
+
+    if (end < start) {
+        direction = -1
+    }
+
+    if (start == 0 && end == 2) {
+        direction = -1
+    }
+
+    if (start == 2 && end == 0) {
+        direction = 1
+    }
+
+    if (start == 0 && end == 1) {
+        direction = -1
+    }
+
+    if (start == 1 && end == 0) {
+        direction = 1
+    }
+
+    if (start == 3 && end == 1) {
+        direction = 1
+    }
+
+    if (start == 2 && end == 1) {
+        direction = 1
+    }
+
+
+    if (start == 1 && end == 3) {
+        direction = -1
+    }
+
+    if (start == 1 && end == 2) {
+        direction = -1
+    }
+    if (start == 6 && end == 7) {
+        direction = -1
+    }
+
+
+
+    return direction || 1
 }
 
 
@@ -156,7 +212,6 @@ function onDocumentMouseUp(event) {
 
     if (intersects.length > 0) {
 
-        console.log(intersects[0].point)
 
 
 
@@ -173,7 +228,7 @@ function onDocumentMouseUp(event) {
                 let currentPosition = element.findIndex(element => JSON.stringify(element) == JSON.stringify(intersects[0].object.rotatePosition));
                 if (currentPosition != -1) {
                     finishArray.push(key)
-
+                    finishIndex = currentPosition
                 }
             }
         }
@@ -181,17 +236,14 @@ function onDocumentMouseUp(event) {
 
 
         if (startArray[0] == finishArray[0]) {
-            console.log(startArray[0])
             allAllowGroup.push(startArray[0])
         }
         if (startArray[1] == finishArray[1]) {
-            console.log(startArray[1])
             allAllowGroup.push(startArray[1])
 
 
         }
         if (startArray[2] == finishArray[2]) {
-            console.log(startArray[2])
             allAllowGroup.push(startArray[2])
         }
 
@@ -202,16 +254,20 @@ function onDocumentMouseUp(event) {
         } else {
             direction = ['vertical', startDrag.y >= currentMousePosition.y ? 1 : -1]
         }
-        console.log(direction)
 
         if (Math.abs(intersects[0].point.x.toFixed(3)) == 0.167) {
             let side = allAllowGroup.find(element => element[element.length - 1] != "X")
-            console.log(side, '----->', allAllowGroup)
             let correctDirection = intersects[0].point.x.toFixed(3) > 0 ? 1 : -1;
-            correctDirection *= direction[1]
 
+            if (direction[0] == 'vertical') {
+                correctDirection = intersects[0].point.x.toFixed(3) < 0 ? 1 : -1;
+            }
+            if (direction[0] == 'horizontal' && correctDirection < 0) {
+                correctDirection = intersects[0].point.x.toFixed(3) < 0 ? 1 : -1;
+            }
+            correctDirection *= direction[1]
             try {
-                side && mainCube[side](direction[1] * correctDirection)
+                side && mainCube[side](correctDirection)
 
 
             } catch (error) {
@@ -221,15 +277,15 @@ function onDocumentMouseUp(event) {
 
         }
         if (Math.abs(intersects[0].point.y.toFixed(3)) == 0.167) {
+            let direction = getDirection(startIndex, finishIndex);
 
             let side = allAllowGroup.find(element => element[element.length - 1] != "Y")
-            console.log(side, '----->', allAllowGroup)
 
-            let correctDirection = intersects[0].point.y.toFixed(3) > 0 ? 1 : -1;
-            correctDirection *= direction[1]
+            let correctDirection = intersects[0].point.y.toFixed(3) > 0 ? -1 : 1;
+
+            correctDirection *= direction
 
             try {
-
                 side && mainCube[side](correctDirection)
             } catch (error) {
                 console.log(error)
@@ -239,16 +295,16 @@ function onDocumentMouseUp(event) {
         if (Math.abs(intersects[0].point.z.toFixed(3)) == 0.167) {
 
             let side = allAllowGroup.find(element => element[element.length - 1] != "Z")
-            console.log(side, '----->', allAllowGroup)
 
             let correctDirection = intersects[0].point.z.toFixed(3) > 0 ? 1 : -1;
+            if (direction[0] == 'horizontal' && correctDirection < 0) {
+                correctDirection = intersects[0].point.z.toFixed(3) < 0 ? 1 : -1;
+            }
             correctDirection *= direction[1]
-            console.log(correctDirection)
             try {
 
                 side && mainCube[side](correctDirection)
             } catch (error) {
-                console.log(error)
             }
 
         }
@@ -257,9 +313,11 @@ function onDocumentMouseUp(event) {
 
     }
 
-    allAllowGroup = []
-    startArray = []
-    finishArray = []
+    allAllowGroup = [];
+    startArray = [];
+    finishArray = [];
+    startIndex = null;
+    finishIndex = null;
 }
 
 function onMouseMove(event) {

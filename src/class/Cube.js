@@ -21,7 +21,7 @@ class Cube {
         this.position = 1;
 
         this.g90 = Math.PI / 2;
-        this.rotationSpeed = 500;
+        this.rotationSpeed = 10000;
 
         this.c0 = new Cubic(colors.lwrb1, [-this.position, -this.position, this.position]);
         this.c1 = new Cubic(colors.lwr2, [0, -this.position, this.position]);
@@ -100,7 +100,7 @@ class Cube {
             if (this['c' + index].rotatePosition[2] === 1) {
                 this.frontGroupZ.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], frontRotateZ, -direction)
+                let currentPosition = this.getNewPosition(this['c' + index], frontRotateZ, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
 
@@ -108,7 +108,7 @@ class Cube {
         }
 
 
-        const frontTween = new TWEEN.Tween(this.frontGroupZ.rotation).to({ z: this.frontGroupZ.rotation.z + this.g90 * direction}, this.rotationSpeed);
+        const frontTween = new TWEEN.Tween(this.frontGroupZ.rotation).to({ z: this.frontGroupZ.rotation.z + this.g90 * direction * -1}, this.rotationSpeed);
         frontTween.start()
         return new Promise((resolve) => {
             frontTween.onComplete(() => {
@@ -123,13 +123,13 @@ class Cube {
             if (this['c' + index].rotatePosition[2] === 0) {
                 this.middleGroupZ.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], middleRotateZ, -direction)
+                let currentPosition = this.getNewPosition(this['c' + index], middleRotateZ, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
         }
 
-        const frontTween = new TWEEN.Tween(this.middleGroupZ.rotation).to({ z: this.middleGroupZ.rotation.z + this.g90 * direction}, this.rotationSpeed);
+        const frontTween = new TWEEN.Tween(this.middleGroupZ.rotation).to({ z: this.middleGroupZ.rotation.z + this.g90 * direction * -1}, this.rotationSpeed);
         frontTween.start()
 
         return new Promise((resolve) => {
@@ -145,13 +145,13 @@ class Cube {
             if (this['c' + index].rotatePosition[2] === -1) {
                 this.backGroupZ.attach(this['c' + index].cube)
 
-                let currentPosition = this.getNewPosition(this['c' + index], backRotateZ, -direction)
+                let currentPosition = this.getNewPosition(this['c' + index], backRotateZ, direction)
 
                 if (currentPosition) this['c' + index].rotatePos(currentPosition);
             }
         }
 
-        const frontTween = new TWEEN.Tween(this.backGroupZ.rotation).to({ z: this.backGroupZ.rotation.z + this.g90 * direction}, this.rotationSpeed);
+        const frontTween = new TWEEN.Tween(this.backGroupZ.rotation).to({ z: this.backGroupZ.rotation.z + this.g90 * direction * -1}, this.rotationSpeed);
         frontTween.start()
 
         return new Promise((resolve) => {
